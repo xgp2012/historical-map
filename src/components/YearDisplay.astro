@@ -1,0 +1,58 @@
+---
+// 年份显示组件
+---
+
+<div class="absolute top-6 left-1/2 -translate-x-1/2 z-10 text-center pointer-events-none" id="year-display">
+  <div class="text-6xl md:text-7xl font-display text-gold year-glow" id="year-text">
+    公元前500年
+  </div>
+  <div class="text-lg font-display text-amber-light/60 mt-1" id="era-text">
+    古典时代
+  </div>
+</div>
+
+<script>
+  const yearText = document.getElementById('year-text');
+  const eraText = document.getElementById('era-text');
+  
+  function formatYear(year: number): string {
+    if (year < 0) {
+      return `公元前${Math.abs(year)}年`;
+    }
+    return `公元${year}年`;
+  }
+
+  function updateYear(year: number) {
+    if (yearText) {
+      // 动画效果：淡出
+      yearText.style.opacity = '0';
+      yearText.style.transform = 'translateY(10px)';
+      
+      setTimeout(() => {
+        yearText.textContent = formatYear(year);
+        yearText.style.opacity = '1';
+        yearText.style.transform = 'translateY(0)';
+      }, 150);
+    }
+  }
+
+  function updateEra(era: string) {
+    if (eraText) {
+      eraText.textContent = era;
+    }
+  }
+
+  window.addEventListener('year-change', ((e: CustomEvent) => {
+    updateYear(e.detail.year);
+  }) as EventListener);
+
+  window.addEventListener('period-change', ((e: CustomEvent) => {
+    updateEra(e.detail.period.era);
+  }) as EventListener);
+</script>
+
+<style>
+  #year-text {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+</style>

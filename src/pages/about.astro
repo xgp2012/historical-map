@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <main class="relative w-screen h-screen overflow-hidden bg-parchment flex items-center justify-center">
+    <div class="max-w-lg mx-auto px-8 text-center">
+      <h1 class="text-4xl font-display text-gold mb-4">关于本网站</h1>
+      <p class="text-amber-light/70 font-body text-lg leading-relaxed mb-6">
+        「历史地图」是一个交互式历史地理探索工具，通过拖动时间线即可查看全球不同时期的历史版图变迁。
+      </p>
+      <p class="text-amber-light/60 font-body text-base leading-relaxed mb-8">
+        从公元前3000年的早期文明，到公元2000年的当代世界，
+        您可以在数千年的人类历史长河中自由穿梭，直观感受帝国的兴衰与文明的演进。
+      </p>
+      <div class="flex gap-4 justify-center">
+        <a href="/" class="px-6 py-3 border border-gold-dark/50 text-gold rounded-lg hover:bg-gold-dark/10 transition-all font-body">
+          返回地图
+        </a>
+      </div>
+      
+      <div class="mt-12 text-xs text-gold-dark/40 font-body">
+        <p>数据来源：历史资料整理 | 仅供学习参考</p>
+        <p class="mt-1">疆域边界为示意性质，不具精确地理参考意义</p>
+      </div>
+    </div>
+    
+    <!-- 装饰性边框 -->
+    <div class="absolute top-0 left-0 w-32 h-32 pointer-events-none">
+      <div class="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-gold-dark/30"></div>
+    </div>
+    <div class="absolute top-0 right-0 w-32 h-32 pointer-events-none">
+      <div class="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-gold-dark/30"></div>
+    </div>
+    <div class="absolute bottom-0 left-0 w-32 h-32 pointer-events-none">
+      <div class="absolute bottom-0 left-0 w-24 h-24 border-b-2 border-l-2 border-gold-dark/30"></div>
+    </div>
+    <div class="absolute bottom-0 right-0 w-32 h-32 pointer-events-none">
+      <div class="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-gold-dark/30"></div>
+    </div>
+  </main>
+</BaseLayout>

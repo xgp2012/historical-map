@@ -1,0 +1,95 @@
+---
+// 信息面板组件
+---
+
+<div class="absolute top-24 left-6 z-10 w-72 max-w-[calc(100vw-3rem)]" id="info-panel">
+  <div class="info-panel max-h-[60vh] overflow-y-auto custom-scrollbar">
+    <div class="mb-4">
+      <h3 class="text-gold font-display text-lg font-bold" id="period-label">古典时代</h3>
+      <p class="text-amber-light/50 text-sm font-body mt-0.5" id="period-year">约公元前500年</p>
+    </div>
+    
+    <div class="mb-3">
+      <h4 class="text-gold-dark font-display text-sm font-semibold mb-2 uppercase tracking-wider">重大事件</h4>
+      <div id="event-list">
+        <div class="event-item">
+          <p class="text-gold-dark text-xs font-body">约公元前550年</p>
+          <p class="text-amber-light text-sm font-body">波斯帝国建立</p>
+          <p class="text-amber-light/60 text-xs font-body mt-0.5">居鲁士大帝建立波斯阿契美尼德帝国</p>
+        </div>
+        <div class="event-item">
+          <p class="text-gold-dark text-xs font-body">约公元前509年</p>
+          <p class="text-amber-light text-sm font-body">罗马共和国建立</p>
+          <p class="text-amber-light/60 text-xs font-body mt-0.5">罗马废除王政，建立共和制度</p>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <h4 class="text-gold-dark font-display text-sm font-semibold mb-2 uppercase tracking-wider">主要帝国</h4>
+      <div id="empire-list" class="space-y-1">
+        <div class="text-amber-light/80 text-sm font-body">波斯帝国</div>
+        <div class="text-amber-light/80 text-sm font-body">希腊城邦</div>
+        <div class="text-amber-light/80 text-sm font-body">罗马共和国</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const periodLabel = document.getElementById('period-label');
+  const periodYear = document.getElementById('period-year');
+  const eventList = document.getElementById('event-list');
+  const empireList = document.getElementById('empire-list');
+
+  function formatYear(year: number): string {
+    if (year < 0) {
+      return `约公元前${Math.abs(year)}年`;
+    }
+    return `约公元${year}年`;
+  }
+
+  window.addEventListener('period-change', ((e: CustomEvent) => {
+    const period = e.detail.period;
+    
+    if (periodLabel) periodLabel.textContent = period.label;
+    if (periodYear) periodYear.textContent = formatYear(period.year);
+    
+    // 更新事件列表
+    if (eventList) {
+      eventList.innerHTML = period.events
+        .slice(0, 4)
+        .map((event: any) => `
+          <div class="event-item">
+            <p class="text-gold-dark text-xs font-body">${formatYear(event.year)}</p>
+            <p class="text-amber-light text-sm font-body">${event.title}</p>
+            <p class="text-amber-light/60 text-xs font-body mt-0.5">${event.description}</p>
+          </div>
+        `)
+        .join('');
+    }
+    
+    // 更新帝国列表
+    if (empireList) {
+      // 获取唯一的帝国名称（去重）
+      const empireNames = new Map();
+      period.territories.forEach((t: any) => {
+        if (!empireNames.has(t.empireId)) {
+          empireNames.set(t.empireId, t.empireId);
+        }
+      });
+      
+      // 这里需要导入 empires 数据，但我们在 script 中直接访问
+      // 使用从 window 获取的数据
+      const empires = (window as any).__empireData || [];
+      const names = Array.from(empireNames.keys()).map((id: string) => {
+        const emp = empires.find((e: any) => e.id === id);
+        return emp ? emp.name : id;
+      });
+      
+      empireList.innerHTML = names
+        .map((name: string) => `<div class="text-amber-light/80 text-sm font-body">${name}</div>`)
+        .join('');
+    }
+  }) as EventListener);
+</script>

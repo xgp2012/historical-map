@@ -1,0 +1,46 @@
+---
+// 帝国图例组件
+import { empires } from '../data/empires';
+---
+
+<div class="absolute bottom-28 right-6 z-10" id="legend-panel">
+  <div class="info-panel min-w-[140px]">
+    <h4 class="text-gold-dark font-display text-xs font-semibold mb-2 uppercase tracking-wider">图例</h4>
+    <div id="legend-items" class="space-y-1.5">
+      <!-- 动态由 JS 填充 -->
+    </div>
+  </div>
+</div>
+
+<script>
+  import { empires } from '../data/empires';
+  
+  // 将帝国数据暴露给全局，供 InfoPanel 使用
+  (window as any).__empireData = empires;
+
+  const legendContainer = document.getElementById('legend-items');
+
+  function updateLegend(period: any) {
+    if (!legendContainer) return;
+    
+    const empireIds = new Set<string>();
+    period.territories.forEach((t: any) => empireIds.add(t.empireId));
+    
+    legendContainer.innerHTML = Array.from(empireIds)
+      .map((id: string) => {
+        const empire = empires.find(e => e.id === id);
+        if (!empire) return '';
+        return `
+          <div class="empire-legend-item">
+            <span class="w-3 h-3 rounded-sm flex-shrink-0" style="background-color: ${empire.color}"></span>
+            <span class="text-xs">${empire.name}</span>
+          </div>
+        `;
+      })
+      .join('');
+  }
+
+  window.addEventListener('period-change', ((e: CustomEvent) => {
+    updateLegend(e.detail.period);
+  }) as EventListener);
+</script>

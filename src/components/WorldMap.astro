@@ -1,0 +1,61 @@
+---
+// 世界地图组件 - Canvas 渲染容器
+---
+
+<div class="absolute inset-0 overflow-hidden" id="map-container">
+  <canvas id="world-map-canvas" class="w-full h-full"></canvas>
+  
+  <!-- 装饰性角落元素 -->
+  <div class="absolute top-0 left-0 w-32 h-32 pointer-events-none">
+    <div class="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-gold-dark/30"></div>
+  </div>
+  <div class="absolute top-0 right-0 w-32 h-32 pointer-events-none">
+    <div class="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-gold-dark/30"></div>
+  </div>
+  <div class="absolute bottom-0 left-0 w-32 h-32 pointer-events-none">
+    <div class="absolute bottom-0 left-0 w-24 h-24 border-b-2 border-l-2 border-gold-dark/30"></div>
+  </div>
+  <div class="absolute bottom-0 right-0 w-32 h-32 pointer-events-none">
+    <div class="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-gold-dark/30"></div>
+  </div>
+</div>
+
+<script>
+  import { MapRenderer } from '../utils/map-renderer';
+  import { historicalPeriods, findPeriod } from '../data/historical-data';
+
+  let renderer: MapRenderer | null = null;
+  let currentPeriod = historicalPeriods[0];
+
+  function initMap() {
+    const canvas = document.getElementById('world-map-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    
+    renderer = new MapRenderer(canvas);
+    
+    // 设置默认时期
+    const defaultPeriod = findPeriod(-500);
+    currentPeriod = defaultPeriod;
+    renderer.setPeriod(defaultPeriod);
+    
+    // 监听时间变化事件
+    window.addEventListener('year-change', ((e: CustomEvent) => {
+      const year = e.detail.year;
+      const period = findPeriod(year);
+      if (period !== currentPeriod) {
+        currentPeriod = period;
+        renderer?.setPeriod(period);
+        
+        // 触发信息更新事件
+        window.dispatchEvent(new CustomEvent('period-change', { detail: { period } }));
+      }
+    }) as EventListener);
+  }
+
+  // 页面加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMap);
+  } else {
+    initMap();
+  }
+</script>

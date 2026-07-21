@@ -1,0 +1,88 @@
+---
+// 时间线滑块组件
+import { timelineYears } from '../data/historical-data';
+---
+
+<div class="absolute bottom-0 left-0 right-0 z-20 px-8 pb-6 pt-2" id="timeline-container">
+  <div class="max-w-6xl mx-auto">
+    <!-- 年代刻度 -->
+    <div class="relative h-8 mb-2" id="timeline-markers">
+      {
+        timelineYears.map((year) => (
+          <div
+            class="timeline-marker"
+            data-year={year}
+            style={`left: ${((year + 3000) / 5000) * 100}%`}
+          ></div>
+        ))
+      }
+    </div>
+    
+    <!-- 滑块 -->
+    <div class="relative">
+      <input
+        type="range"
+        id="timeline-slider"
+        class="timeline-slider"
+        min="-3000"
+        max="2000"
+        value="-500"
+        step="100"
+      />
+      
+      <!-- 刻度标签 -->
+      <div class="flex justify-between mt-1 text-xs text-gold-dark/60 font-body">
+        <span>公元前3000年</span>
+        <span>公元前2000年</span>
+        <span>公元前1000年</span>
+        <span>公元前500年</span>
+        <span>公元0年</span>
+        <span>公元500年</span>
+        <span>公元1000年</span>
+        <span>公元1500年</span>
+        <span>公元1800年</span>
+        <span>公元1900年</span>
+        <span>公元2000年</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { timelineYears } from '../data/historical-data';
+
+  const slider = document.getElementById('timeline-slider') as HTMLInputElement;
+  const markers = document.querySelectorAll('.timeline-marker');
+
+  function updateMarkers(year: number) {
+    markers.forEach((marker) => {
+      const markerYear = parseInt(marker.getAttribute('data-year') || '0');
+      const diff = Math.abs(year - markerYear);
+      if (diff <= 500) {
+        marker.classList.add('active');
+      } else {
+        marker.classList.remove('active');
+      }
+    });
+  }
+
+  function formatYear(year: number): string {
+    if (year < 0) {
+      return `公元前${Math.abs(year)}年`;
+    }
+    return `公元${year}年`;
+  }
+
+  if (slider) {
+    // 初始更新
+    updateMarkers(-500);
+
+    slider.addEventListener('input', () => {
+      const year = parseInt(slider.value);
+      updateMarkers(year);
+      
+      // 触发年份变化事件
+      window.dispatchEvent(new CustomEvent('year-change', { detail: { year } }));
+    });
+  }
+</script>

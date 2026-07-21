@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorldMap from '../components/WorldMap.astro';
+import Timeline from '../components/Timeline.astro';
+import YearDisplay from '../components/YearDisplay.astro';
+import InfoPanel from '../components/InfoPanel.astro';
+import Legend from '../components/Legend.astro';
+import SearchBar from '../components/SearchBar.astro';
+---
+
+<BaseLayout>
+  <main class="relative w-screen h-screen overflow-hidden bg-parchment">
+    <!-- 地图层 -->
+    <WorldMap />
+    
+    <!-- 年份显示 -->
+    <YearDisplay />
+    
+    <!-- 信息面板 -->
+    <InfoPanel />
+    
+    <!-- 帝国图例 -->
+    <Legend />
+    
+    <!-- 搜索框 -->
+    <SearchBar />
+    
+    <!-- 时间线 -->
+    <Timeline />
+    
+    <!-- 装饰性底部文字 -->
+    <div class="absolute bottom-28 left-6 z-10 pointer-events-none">
+      <p class="text-xs text-gold-dark/40 font-body">拖动时间线探索世界历史</p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    background: radial-gradient(ellipse at center, #1a1410 0%, #0f0b08 100%);
+  }
+</style>

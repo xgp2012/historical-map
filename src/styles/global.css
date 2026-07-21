@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-parchment text-amber-light font-body;
+    margin: 0;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  .timeline-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #2a2218, #c9a84c);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .timeline-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #c9a84c;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(201, 168, 76, 0.5), 0 0 30px rgba(201, 168, 76, 0.2);
+    border: 2px solid #e8c96a;
+    transition: box-shadow 0.2s;
+  }
+
+  .timeline-slider::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.7), 0 0 40px rgba(201, 168, 76, 0.3);
+  }
+
+  .timeline-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #c9a84c;
+    cursor: pointer;
+    border: 2px solid #e8c96a;
+    box-shadow: 0 0 15px rgba(201, 168, 76, 0.5);
+  }
+
+  .timeline-marker {
+    @apply absolute w-1 h-3 bg-gold-dark rounded-full;
+    transform: translateX(-50%);
+    opacity: 0.5;
+    transition: opacity 0.2s, height 0.2s;
+  }
+
+  .timeline-marker.active {
+    @apply bg-gold;
+    opacity: 1;
+    height: 16px;
+  }
+
+  .info-panel {
+    @apply bg-parchment/90 backdrop-blur-sm border border-gold-dark/30 rounded-lg p-5;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .year-glow {
+    text-shadow: 0 0 30px rgba(201, 168, 76, 0.3), 0 0 60px rgba(201, 168, 76, 0.1);
+  }
+
+  .empire-legend-item {
+    @apply flex items-center gap-2 text-sm text-amber-light/80 transition-all duration-300;
+  }
+
+  .empire-legend-item:hover {
+    @apply text-amber-light;
+  }
+
+  .event-item {
+    @apply border-l-2 border-gold-dark/30 pl-3 py-1 transition-all duration-200;
+  }
+
+  .event-item:hover {
+    @apply border-gold;
+  }
+
+  /* 自定义滚动条 */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(201, 168, 76, 0.3);
+    border-radius: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(201, 168, 76, 0.5);
+  }
+
+  /* 地图过渡动画 */
+  .map-fade-enter {
+    opacity: 0;
+  }
+
+  .map-fade-enter-active {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+}
+
+@layer utilities {
+  .text-shadow-gold {
+    text-shadow: 0 0 10px rgba(201, 168, 76, 0.3);
+  }
+}
